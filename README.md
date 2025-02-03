@@ -142,6 +142,33 @@ Contribuições para aprimorar o **FastAPI-INSS** são sempre bem-vindas! Para c
 
 ---
 
+
+
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE). Consulte o arquivo LICENSE para mais informações.
+
+## Autores
+
+<table>
+  <tr>
+     <td align="center">
+      <a href="https://github.com/Kenjibercysec" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/105324711?v=4" width="100px;" alt=""/>
+      </a>
+      <br /><sub><b> Silas Kenji </b></sub>
+    </td>
+          <td align="center">
+      <a href="https://github.com/nailasuely" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/104640675?v=4" width="100px;" alt=""/>
+      </a>
+      <br /><sub><b> Vitor Hugo </b></sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Ukobir" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/130801222?v=4" width="100px;" alt=""/>
+      </a>
+      <br /><sub><b> Carla Letícia </b></sub>
+    </td>
+  </tr>
+</table>
