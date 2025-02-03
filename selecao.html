@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSS - Página</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="inss-logo.png" alt="Logo INSS" class="logo">
+        </header>
+
+        <div class="top-btns">
+            <a class="as" href="index.html"><button type="button" style="opacity: 70%;" class="button"> Consulta </button></a>
+            <a class="as" href="selecao.html"><button type="button" style=" opacity: 90%;" class="button">Cadastro</button></a>
+         </div>
+
+        <div class="form-section">
+
+            <form method="GET" action="cadpc.html" class="form-group" id="deviceForm">
+                <select class="form-select" id="deviceType">
+                    <option value="" disabled selected>Tipo de dispositivo</option>
+                    <option value="computador">Computador</option>
+                    <option value="monitor">Monitor</option>
+                    <option value="impressora">Impressora</option>
+                    <option value="switch">Switch</option>
+                    <option value="scanner">Scanner</option>
+                    <option value="teclado">Teclado</option>
+                </select>
+                <button type="submit" class="button">Selecionar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+MODELO RELACIONAL BD INSS
+
+
+
+Estrutura
+Tabela dispositivos
+id_tomb (INT, PRIMARY KEY, UNIQUE): Identificador único de cada dispositivo.
+tipo_de_disp (VARCHAR): Tipo do dispositivo (Monitor, computador, impressora).
+qnt_ram (INT): Quantidade de memória RAM.
+qnt_armaz (INT): Capacidade de armazenamento.
+tipo_armaz (VARCHAR): Se é HD ou SSD.
+marca (VARCHAR): Marca do dispositivo.
+funcionando (BOOLEAN): Pra indicar se o dispositivo está funcionando ou não.
+data_de_an (DATE): Data da última análise.
+locat_do_disp (VARCHAR): Onde se encontra o dispositivo atualmente.
+descricao (TEXT): Descrição do dispositivo, indicação de estado, observações de defeitos.
+
+Tabela log_atualizacoes
+id_log (INT, PRIMARY KEY, AUTO_INCREMENT): Identificador único de cada registro de log.
+id_tomb (INT, FOREIGN KEY REFERENCES dispositivos(id_tombamento)): Referência ao dispositivo que foi alterado.
+campo_alterado (VARCHAR): Nome do campo que foi modificado.
+valor_antigo (TEXT): Valor anterior do campo.
+valor_novo (TEXT): Novo valor do campo.
+data_hora_alteracao (TIMESTAMP): Data e hora da alteração.
+
+
+código
+CREATE TABLE dispositivos (
+    id_tomb INT PRIMARY KEY UNIQUE KEY NOT NULL,
+    tipo_de_disp CHAR(50) NOT NULL,
+    qnt_ram INT,
+    qnt_armaz INT,
+    tipo_armaz CHAR(3),
+    marca VARCHAR(50) NOT NULL,
+    funcionando BOOLEAN NULL,
+    data_de_an DATE,
+    locat_do_disp VARCHAR(40) NOT NULL,
+    descricao TEXT NOT NULL
+);
+
+
+criação da tabela log_dispositivos
+
+
+CREATE TABLE log_atualizacoes (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    id_tomb INT NOT NULL,
+    campo_alterado CHAR(50),
+    valor_antigo TEXT,
+    valor_novo TEXT,
+    data_hora_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FOREIGN KEY (id_tomb) REFERENCES dispositivos(id_tomb)
+);
+
+
+CREATE TRIGGER tr_log_atualizacoes_update
+AFTER UPDATE ON dispositivos
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_atualizacoes (id_tombamento, campo_alterado, valor_antigo, valor_novo, data_hora_alteracao)
+    VALUES (OLD.id_tombamento, 'tipo_de_dispositivo', OLD.tipo_de_dispositivo, NEW.tipo_de_dispositivo),
+           (OLD.id_tombamento, 'qnt_ram', OLD.qnt_ram, NEW.qnt_ram),
+	   (OLD.id_tombamento, 'qnt_armazenamento', OLD.qnt_armazenamento, NEW.qnt_armazenamento),
+	   (OLD.id_tombamento, 'estado', OLD.estado, NEW.estado),
+ 	   (OLD.id_tombamento, 'descricao', OLD.descricao, NEW.descricao);
+           
+END;
