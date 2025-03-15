@@ -15,21 +15,58 @@
         <div class="top-btns">
             <a class="as" href="index.html"><button type="button" style="opacity: 70%;" class="button"> Consulta </button></a>
             <a class="as" href="selecao.html"><button type="button" style=" opacity: 90%;" class="button">Cadastro</button></a>
-         </div>
+        </div>
 
-        <form class="form-section" id="cad-form" name="cad-form">
+        <form class="form-section" id="device-form">
             <div class="form-group">
-                <input type="text" placeholder="Nº de tombamento" class="form-input">
-                <input type="text" placeholder="Marca" class="form-input">
-                <input type="text" placeholder="Funcionando?" class="form-input">
-                <input type="text" placeholder="Local atual do Dispositivo" class="form-input">
-                <input type="text" placeholder="Descrição" class="form-input desc">
-                <input type="date" placeholder="Data da análise" class="form-input">
-                <button type="submit" class="button">Selecionar</button>
+                <input type="number" name="id_tomb" placeholder="Nº de tombamento" class="form-input" required>
+                <input type="text" name="tipo_de_disp" placeholder="Tipo de Dispositivo" class="form-input" required>
+                <input type="text" name="marca" placeholder="Marca" class="form-input" required>
+                <input type="number" name="qnt_ram" placeholder="Quantidade de Memória RAM" class="form-input">
+                <input type="number" name="qnt_armaz" placeholder="Quantidade de Armazenamento" class="form-input">
+                <input type="text" name="tipo_armaz" placeholder="Tipo de Armazenamento" class="form-input">
+                <input type="checkbox" id="funcionandoCheckbox" name="funcionando">
+                <label for="funcionandoCheckbox">Funcionando</label>
+                <input type="text" name="locat_do_disp" placeholder="Local atual do Dispositivo" class="form-input" required>
+                <input type="text" name="descricao" placeholder="Descrição" class="form-input desc" required>
+                <input type="date" name="data_de_an" placeholder="Data da análise" class="form-input" required>
             </div>
             <div class="form-group">
+                <button type="submit" class="button">Cadastrar</button>
             </div>
         </form>
     </div>
+    <script>
+        document.getElementById('device-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const deviceData = {};
+            formData.forEach((value, key) => {
+                if (key === 'funcionando') {
+                    deviceData[key] = document.getElementById('funcionandoCheckbox').checked;
+                } else {
+                    deviceData[key] = value;
+                }
+            });
+
+            fetch('http://localhost:8000/devices/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(deviceData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Dispositivo cadastrado com sucesso!');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Erro ao cadastrar dispositivo');
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    </script>
 </body>
 </html>

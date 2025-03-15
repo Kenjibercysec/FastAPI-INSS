@@ -69,34 +69,52 @@ FastAPI-INSS/
 
 ## Instalação
 
-### 1. Clone o Repositório
+1. Clone o repositório:
+   ```sh
+   git clone https://github.com/seu_usuario/FastAPI-INSS.git
+   cd FastAPI-INSS
+   ```
 
-```bash
-git clone https://github.com/Kenjibercysec/FastAPI-INSS.git
-cd FastAPI-INSS
-```
-### 2. Crie e Ative um Ambiente Virtual (Opcional, mas Recomendado)
+2. Crie e ative um ambiente virtual:
+   ```sh
+   python -m venv venv
+   source venv/bin/activate  # No Windows, use `venv\Scripts\activate`
+   ```
 
-#### Linux/MacOS:
+3. Instale as dependências:
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-```bash
-python -m venv venv
-source venv/bin/activate
-```
-Windows:
-```bash
-python -m venv venv
-venv\Scripts\activate
-```
-3. Instale as Dependências
-```bash
-pip install -r requirements.txt
-```
-4. Configuração do Banco de Dados
-```
-Importe o arquivo BANCO DE DADOS DOS DISPOSITIVOS .sql em seu SGBD para criar as tabelas necessárias.
-Ajuste as configurações de conexão (host, usuário, senha, nome do banco) no código do back-end conforme necessário.
-```
+4. Configure as variáveis de ambiente no arquivo `.env`:
+   ```
+   DATABASE_URL=mysql+pymysql://seu_usuario:sua_senha@seu_host/nome_do_banco
+   ```
+
+## Execução
+
+1. Inicie o servidor FastAPI:
+   ```sh
+   uvicorn backend.api:app --reload
+   ```
+
+2. Acesse a documentação da API em [http://localhost:8000/docs](http://localhost:8000/docs).
+
+## Testes
+
+1. Execute os testes:
+   ```sh
+   pytest backend/test_api.py
+   ```
+
+## Rotas da API
+
+- `POST /items/`: Cria um novo dispositivo.
+- `GET /items/`: Retorna uma lista de dispositivos.
+- `GET /items/{item_id}`: Retorna um dispositivo pelo ID.
+- `PUT /items/{item_id}`: Atualiza um dispositivo pelo ID.
+- `GET /items/{item_id}/history`: Retorna o histórico de atualizações de um dispositivo.
+
 ## Uso
 Executando o Back-end
 No diretório backend, localize o arquivo principal (por exemplo, main.py ou app.py) e execute o servidor FastAPI:
@@ -141,8 +159,6 @@ Contribuições para aprimorar o **FastAPI-INSS** são sempre bem-vindas! Para c
 5. Abra um **Pull Request** detalhando suas mudanças.
 
 ---
-
-
 
 ## Licença
 

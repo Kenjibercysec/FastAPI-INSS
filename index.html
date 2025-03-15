@@ -23,126 +23,76 @@
         </div>
         
         <div class="info-box" id="info-box">
-            <div type="button" class="btn-info-box" id="btn-info-box">
-                <p><strong>Tipo de dispositivo:</strong></p>   
-                <p><strong>Nº de tombamento:</strong></p>
             </div>
-            <div class="caract" id="caract">
-                <p>Marca:</p>
-                <p>Quantidade de Memória RAM:</p>
-                <p>Quantidade de Armazenamento:</p>
-                <p>Tipo de Armazenamento:</p>
-                <p>Funcionando:</p>
-                <p>Local Atual do Dispositivo:</p>
-                <p>Descrição:</p>
-                <p>Data da Análise:</p>
-                <div class="card-btns" name="card-btns">
-                    <button class="btn-b">Editar</button>
-                    <button class="btn-c">Excluir</button>
-                    <button class="btn-b">Exibir Histórico</button>
-                </div>
-            </div>
-        </div>
     </div>
 </body>
 <script src="inss.js"></script>
 <script>
     document.getElementById('search-btn').addEventListener('click', function() {
         const query = document.getElementById('search-bar').value;
-        fetch(`http://localhost:8000/search?query=${query}`)
+        fetch(`http://localhost:8000/search/${query}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Adicione esta linha para depuração
+                console.log(data);
                 if (data.detail) {
                     alert('Item não encontrado');
                     return;
                 }
-                // Atualize a info-box com os dados recebidos
                 updateInfoBox(data);
             })
             .catch(error => console.error('Erro:', error));
     });
 
-    function updateInfoBox(data) {
-        document.getElementById('info-box').innerHTML = `
-            <div type="button" class="btn-info-box" id="btn-info-box">
-                <p><strong>Tipo de dispositivo:</strong> ${data.tipo_de_disp}</p>   
-                <p><strong>Nº de tombamento:</strong> ${data.id_tomb}</p>
-                <p><strong>Quantidade de Armazenamento:</strong> ${data.qnt_armaz}</p>
-                <p><strong>Tipo de Armazenamento:</strong> ${data.tipo_armaz}</p>
-                <p><strong>Marca:</strong> ${data.marca}</p>
-                <p><strong>Funcionando:</strong> ${data.funcionando}</p>
-                <p><strong>Data da Análise:</strong> ${data.data_de_an}</p>
-                <p><strong>Local Atual do Dispositivo:</strong> ${data.locat_do_disp}</p>
-                <p><strong>Descrição:</strong> ${data.descricao}</p>
-            </div>
-            <div class="caract" id="caract">
-                <div class="card-btns" name="card-btns">
-                    <button class="btn-b" onclick="editItem(${data.id})">Editar</button>
-                    <button class="btn-c" onclick="deleteItem(${data.id})">Excluir</button>
-                    <button class="btn-b" onclick="showHistory(${data.id})">Exibir Histórico</button>
+    function updateInfoBox(devices) {
+        let infoBoxContent = '';
+        devices.forEach(device => {
+            infoBoxContent += `
+                <div type="button" class="btn-info-box" id="btn-info-box">
+                    <p><strong>Tipo de dispositivo:</strong> ${device.tipo_de_disp}</p> 
+                    <p><strong>Nº de tombamento:</strong> ${device.id_tomb}</p>
+                    <p><strong>Quantidade de Armazenamento:</strong> ${device.qnt_armaz}</p>
+                    <p><strong>Tipo de Armazenamento:</strong> ${device.tipo_armaz}</p>
+                    <p><strong>Marca:</strong> ${device.marca}</p>
+                    <p><strong>Funcionando:</strong> ${device.funcionando}</p>
+                    <p><strong>Data da Análise:</strong> ${device.data_de_an}</p>
+                    <p><strong>Local Atual do Dispositivo:</strong> ${device.locat_do_disp}</p>
+                    <p><strong>Descrição:</strong> ${device.descricao}</p>
+                    <div class="caract" id="caract">
+                        <div class="card-btns" name="card-btns">
+                            <button class="btn-b" onclick="editItem(${device.id_tomb})">Editar</button>
+                            <button class="btn-c" onclick="deleteItem(${device.id_tomb})">Excluir</button>
+                            <button class="btn-b" onclick="showHistory(${device.id_tomb})">Exibir Histórico</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
+        document.getElementById('info-box').innerHTML = infoBoxContent;
     }
 
-    function editItem(id) {
-        // Implementar a lógica de edição
+    function editItem(id_tomb) {
+        // Redirecionar para a página de edição com o ID do dispositivo
+        window.location.href = `edit.html?id=${id_tomb}`;
     }
 
-    function deleteItem(id) {
-        fetch(`http://localhost:8000/items/${id}`, {
+    function deleteItem(id_tomb) {
+        fetch(`http://localhost:8000/devices/${id_tomb}`, {
             method: 'DELETE'
         })
-        .then(response => response.json())
-        .then(data => {
-            alert('Item excluído com sucesso!');
-            // Atualizar a interface conforme necessário
+        .then(response => {
+            if (response.status === 204) {
+                alert('Item excluído com sucesso!');
+                // Atualizar a interface conforme necessário
+            } else {
+                alert('Erro ao excluir item');
+            }
         })
         .catch(error => console.error('Erro:', error));
     }
 
-    function showHistory(id) {
-        // Implementar a lógica para exibir o histórico
+    function showHistory(id_tomb) {
+        // Redirecionar para a página de histórico com o ID do dispositivo
+        window.location.href = `history.html?id=${id_tomb}`;
     }
-
-    document.getElementById('add-item-btn').addEventListener('click', async () => {
-        const name = document.getElementById('item-name').value;
-        const description = document.getElementById('item-description').value;
-
-        const response = await fetch('http://localhost:8000/items/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name,
-                description: description
-            })
-        });
-
-        if (response.ok) {
-            alert('Item adicionado com sucesso!');
-            // Atualizar a interface conforme necessário
-        } else {
-            alert('Erro ao adicionar item');
-        }
-    });
-
-    // Fetch and display item with id_tomb 832658880 on page load
-    window.onload = function() {
-        fetch(`http://localhost:8000/search?query=832658880`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Adicione esta linha para depuração
-                if (data.detail) {
-                    alert('Item não encontrado');
-                    return;
-                }
-                // Atualize a info-box com os dados recebidos
-                updateInfoBox(data);
-            })
-            .catch(error => console.error('Erro:', error));
-    };
 </script>
 </html>
